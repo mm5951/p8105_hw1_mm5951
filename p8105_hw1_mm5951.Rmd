@@ -6,7 +6,6 @@ output: github_document
 ---
 ```{r, include = FALSE}
 library(tidyverse)
-library(dplyr)
 ```
 
 Welcome to mm5951 homework 1 solution!
@@ -23,11 +22,11 @@ data("penguins", package = "palmerpenguins")
 
 ## Dataset description
 
-Next, I will briefly describe the **key characteristics** of the **"penguins" dataset**. I'll first use the `skmr::skim`command to print out a summary of the dataset. The "penguins" dataset contains 344 rows and 8 columns. That corresponds to the data of n=8 different variables (columns) from n=344 penguins (rows).
+Next, I will briefly describe the **key characteristics** of the **"penguins" dataset**. I'll first use the `skmr::skim`function to print out a summary of the dataset. The "penguins" dataset contains 344 rows and 8 columns. That corresponds to the data of n=8 different variables (columns) from n=344 penguins (rows).
 
 The "penguins" dataset contains:
 * 5 numerical variables ("bill_length_mm", "bill_depth_mm", "flipper_length_mm", "body_mass_g" and "year"), and 
-* 3 categorical ones ("species", "island" and "sex"). 
+* 3 factorial ones ("species", "island" and "sex"). 
 
 As a summary, using the mean output, the average penguin will measure 43.92 mm in height and 17.15 mm in depth, have a flipper length of 200.92 mm and weight 4.2 kg. The overall dataset contains n=168 male and n=165 female from 3 main species (Adelie n=152, Gentoo n=124 and Chinstrap n=68). The data was collected between the years 2007-09.
 
@@ -35,7 +34,7 @@ As a summary, using the mean output, the average penguin will measure 43.92 mm i
 skimr::skim(penguins)
 ```
 
-Alternatively, I could have used the `nrow`and `ncol` functions to return the number of rows and columns of the specified matrix ("penguins"), respectively.
+Alternatively, as per homework instructions, I could have used the `nrow`and `ncol` functions to return the number of rows and columns of the specified matrix ("penguins"), respectively.
 
 ```{r}
 nrow(penguins)
@@ -46,13 +45,13 @@ ncol(penguins)
 
 Next, with the `ggplot`function, I will **produce a scatter plot** of the variables flipper_length_mm (y) vs bill_length_mm (x), using different color points for each species.  
 
-```{r}
+```{r, warning = FALSE}
 ggplot(penguins, aes(x = bill_length_mm, y = flipper_length_mm, color = species)) + geom_point()
 ```
 
 Finally, using the `ggsave`function I will **save the scatter plot** in .png format into the project directory.
 
-```{r}
+```{r, message=FALSE}
 ggsave("scatterplot.png")
 ```
 
@@ -76,74 +75,46 @@ Hw1_df = tibble(
 )
 ```
 
-## Calculate means
+## Calculate means
 
-Next, I will calculate the mean of some of the objects as created above using the `mean` function. Results will be round to three decimals using the function `round`. 
+Next, I will calculate the mean of some of the objects as created above using the `mean` function. To do so, first I will pull each variable (using the function `pull`)and name them y1-y4 following the order in which they appear in the dataframe.
 
 ```{r}
-round(mean(Hw1_df), 3)
+y1 = pull(.data = Hw1_df, var = samp)
+y2 = pull(.data = Hw1_df, var = vec_logical)
+y3 = pull(.data = Hw1_df, var = vec_char)
+y4 = pull(.data = Hw1_df, var = vec_factor)
 ```
 
-I get an error given that the data type of some of the vectors is not numerical nor logical, rather character ("vec_char") or factorial ("vec_factor").
-
-In order to calculate the mean for "samp" (data type: numerical) and "vec_logical (data type: logical), I will use the `pull`function to select these columns separately.
+Then the means are calculated. For the numerical variable, results will be rounded to 3 decimals using the `round` function.
 
 ```{r}
 round(
-    mean(
-      pull(.data = Hw1_df, var = samp)), 
-    3)
-round(
-    mean(
-      pull(.data = Hw1_df, var = vec_logical)), 
-    3)
+  mean(y1), 3
+  )
+
+mean(y2)
+mean(y3)
+mean(y4)
 ```
 
-The means are -0.008 and 0.5 for the "samp" and "vec_logical" objects, respectively.
+As a result of the chunk code, I obtain the mean for "y1 = samp" (data type: numerical) and "y2 = vec_logical" (data type: logical), which are 0.069 and 0.5, respectively. Note that given that y1 is a random sample, would the session be re-started and the .Rmd re-knitted, values might change.
 
-## Convert variable types
+Conversely, I get a warning message for the remaining two variables, given that the data type of some of the vectors is not numerical nor logical, rather character ("y3 = vec_char") or factor ("y4 = vec_factor").
 
-Finally, I will convert the logical, character, and factor variables into numerical using the `as.numeric`function. For each variable, I will use the `pull`function, so that they can be addressed separately from the "Hw1_df" dataframe. Note the chunk is shown, but not the output. 
+## Convert variable types
 
-```{r}
-as.numeric(
-  pull(.data = Hw1_df, var = vec_factor)
-  )
+Finally, I will convert the logical, character, and factor variables into numerical using the `as.numeric` function. For each variable, I will use the `pull`function, so that they can be addressed separately from the "Hw1_df" dataframe. Note the chunk is shown, but not the output, as per homework instructions. 
 
-as.numeric(
-  pull(.data = Hw1_df, var = vec_logical)
-  )
-
-as.numeric(
-  pull(.data = Hw1_df, var = vec_char)
-  )
-```
-
-As a verification, I will check that the conversion has been successful using the `ìs.numeric` function.
-
-```{r}
-is.numeric(
-  as.numeric(
-    pull(.data = Hw1_df, var = vec_factor)
-    )
-  )
-
-is.numeric(
-  as.numeric(
-    pull(.data = Hw1_df, var = vec_logical)
-    )
-  )
-
-is.numeric(
-  as.numeric(
-    pull(.data = Hw1_df, var = vec_char)
-    )
-  )
+```{r, eval = FALSE}
+as.numeric(y2)
+as.numeric(y3)
+as.numeric(y4)
 ```
 
 The "vec_logical" and "vec_factor" are coerced into numeric elements, following a logical rationale (for instance, in "vec_logical", TRUE=1 and FALSE=0; in "vec_factor", its 3 levels are converted into female=1, male=2, nonbinary=3 according to their alphabetical order). The character vector "vec_char" is more challenging, given that there's no logical conversion possible with the provided criteria, and R coerces its 10 elements to NAs.
 
-The kind of data contained in each variable determines whether a mean can be calculated. In general, means can be calculated for numerical and logical vectors (in the latter, using the TRUE=1 and FALSE=0 coercion). Once converted into numerical, the mean of the remaining vectors could be calculated (not recquired as per homework instructions).
+The kind of data contained in each variable determines whether a mean can be calculated. In general, means can be calculated for numerical and logical vectors (in the latter, using the TRUE=1 and FALSE=0 coercion). Once converted into numerical, the mean of the remaining two vectors could be calculated (not required as per homework instructions).
 
 That's it for homework 1!
 
