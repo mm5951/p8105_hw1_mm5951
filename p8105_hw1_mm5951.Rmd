@@ -6,6 +6,7 @@ output: github_document
 ---
 ```{r, include = FALSE}
 library(tidyverse)
+library(dplyr)
 ```
 
 Welcome to mm5951 homework 1 solution!
@@ -68,8 +69,8 @@ First, I will create a data frame using the `tibble`function, incorporating the 
 
 ```{r}
 Hw1_df = tibble(
-  norm = rnorm(n = 10),
-  vec_logical = norm > 0,
+  samp = rnorm(n = 10),
+  vec_logical = samp > 0,
   vec_char = c("This", "is", "homework", "one", "solution", "for", "data", "science", "class", "fall" ),
   vec_factor = factor(c("male", "male", "female", "female", "nonbinary", "nonbinary", "male", "female", "nonbinary", "male"))
 )
@@ -77,13 +78,72 @@ Hw1_df = tibble(
 
 ## Calculate means
 
-Next, I will calculate the mean of some of the objects as created above using the `mean`function. Note that the mean cannot be estimated for categorical variables.
+Next, I will calculate the mean of some of the objects as created above using the `mean` function. Results will be round to three decimals using the function `round`. 
 
-Using the `pull`function, I will 
+```{r}
+round(mean(Hw1_df), 3)
+```
+
+I get an error given that the data type of some of the vectors is not numerical nor logical, rather character ("vec_char") or factorial ("vec_factor").
+
+In order to calculate the mean for "samp" (data type: numerical) and "vec_logical (data type: logical), I will use the `pull`function to select these columns separately.
+
+```{r}
+round(
+    mean(
+      pull(.data = Hw1_df, var = samp)), 
+    3)
+round(
+    mean(
+      pull(.data = Hw1_df, var = vec_logical)), 
+    3)
+```
+
+The means are -0.008 and 0.5 for the "samp" and "vec_logical" objects, respectively.
 
 ## Convert variable types
 
-In some cases, you can explicitly convert variables from one type to another. Write a code chunk that applies the as.numeric function to the logical, character, and factor variables (please show this chunk but not the output). What happens, and why? Does this help explain what happens when you try to take the mean?
+Finally, I will convert the logical, character, and factor variables into numerical using the `as.numeric`function. For each variable, I will use the `pull`function, so that they can be addressed separately from the "Hw1_df" dataframe. Note the chunk is shown, but not the output. 
 
+```{r}
+as.numeric(
+  pull(.data = Hw1_df, var = vec_factor)
+  )
 
+as.numeric(
+  pull(.data = Hw1_df, var = vec_logical)
+  )
+
+as.numeric(
+  pull(.data = Hw1_df, var = vec_char)
+  )
+```
+
+As a verification, I will check that the conversion has been successful using the `ìs.numeric` function.
+
+```{r}
+is.numeric(
+  as.numeric(
+    pull(.data = Hw1_df, var = vec_factor)
+    )
+  )
+
+is.numeric(
+  as.numeric(
+    pull(.data = Hw1_df, var = vec_logical)
+    )
+  )
+
+is.numeric(
+  as.numeric(
+    pull(.data = Hw1_df, var = vec_char)
+    )
+  )
+```
+
+The "vec_logical" and "vec_factor" are coerced into numeric elements, following a logical rationale (for instance, in "vec_logical", TRUE=1 and FALSE=0; in "vec_factor", its 3 levels are converted into female=1, male=2, nonbinary=3 according to their alphabetical order). The character vector "vec_char" is more challenging, given that there's no logical conversion possible with the provided criteria, and R coerces its 10 elements to NAs.
+
+The kind of data contained in each variable determines whether a mean can be calculated. In general, means can be calculated for numerical and logical vectors (in the latter, using the TRUE=1 and FALSE=0 coercion). Once converted into numerical, the mean of the remaining vectors could be calculated (not recquired as per homework instructions).
+
+That's it for homework 1!
 
