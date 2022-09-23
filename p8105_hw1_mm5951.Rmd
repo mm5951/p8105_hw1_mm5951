@@ -5,4 +5,14 @@ date: "2022-09-18"
 output: github_document
 ---
 
+Welcome to mm5951 homework 1 solution!
 
+#Load dataset
+First, I'll load the provided dataset for this exercise.
+
+```{r}
+data("penguins", package = "palmerpenguins")
+```
+
+#Dataset description
+Next, I will briefly describe the key characteristics.
