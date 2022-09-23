@@ -10,7 +10,9 @@ library(tidyverse)
 
 Welcome to mm5951 homework 1 solution!
 
-# Load dataset
+# Problem 1
+
+## Load dataset
 
 First, I'll **load the provided dataset** for this exercise.
 
@@ -18,7 +20,7 @@ First, I'll **load the provided dataset** for this exercise.
 data("penguins", package = "palmerpenguins")
 ```
 
-# Dataset description
+## Dataset description
 
 Next, I will briefly describe the **key characteristics** of the **"penguins" dataset**. I'll first use the `skmr::skim`command to print out a summary of the dataset. The "penguins" dataset contains 344 rows and 8 columns. That corresponds to the data of n=8 different variables (columns) from n=344 penguins (rows).
 
@@ -39,7 +41,7 @@ nrow(penguins)
 ncol(penguins)
 ```
 
-# Graphic outputs
+## Graphic outputs
 
 Next, with the `ggplot`function, I will **produce a scatter plot** of the variables flipper_length_mm (y) vs bill_length_mm (x), using different color points for each species.  
 
@@ -52,4 +54,36 @@ Finally, using the `ggsave`function I will **save the scatter plot** in .png for
 ```{r}
 ggsave("scatterplot.png")
 ```
+
+# Problem 2
+
+## Create a data frame
+
+First, I will create a data frame using the `tibble`function, incorporating the following elements:
+
+* a random sample of size 10 from a standard Normal distribution
+* a logical vector indicating whether elements of the sample are greater than 0
+* a character vector of length 10
+* a factor vector of length 10, with 3 different factor “levels”
+
+```{r}
+Hw1_df = tibble(
+  norm = rnorm(n = 10),
+  vec_logical = norm > 0,
+  vec_char = c("This", "is", "homework", "one", "solution", "for", "data", "science", "class", "fall" ),
+  vec_factor = factor(c("male", "male", "female", "female", "nonbinary", "nonbinary", "male", "female", "nonbinary", "male"))
+)
+```
+
+## Calculate means
+
+Next, I will calculate the mean of some of the objects as created above using the `mean`function. Note that the mean cannot be estimated for categorical variables.
+
+Using the `pull`function, I will 
+
+## Convert variable types
+
+In some cases, you can explicitly convert variables from one type to another. Write a code chunk that applies the as.numeric function to the logical, character, and factor variables (please show this chunk but not the output). What happens, and why? Does this help explain what happens when you try to take the mean?
+
+
 
