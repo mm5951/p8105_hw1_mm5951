@@ -4,6 +4,10 @@ author: "mm5951"
 date: "2022-09-18"
 output: github_document
 ---
+#Load library
+```{r, echo = FALSE}
+library(tidyverse)
+```
 
 Welcome to mm5951 homework 1 solution!
 
@@ -15,4 +19,22 @@ data("penguins", package = "palmerpenguins")
 ```
 
 #Dataset description
-Next, I will briefly describe the key characteristics.
+Next, I will briefly describe the key characteristics of the "penguins" dataset. I'll first use the `skmr::skim`command to print out a summary of the dataset. The "penguins" dataset contains 344 rows and 8 columns. That corresponds to the data of n=8 different variables (columns) from n=344 penguins (rows).
+
+The "penguins" dataset contains 5 numerical variables ("bill_length_mm", "bill_depth_mm", "flipper_length_mm", "body_mass_g" and "year") and 3 categorical ones ("species", "island" and "sex"). 
+
+As a summary, using the mean output, the average penguin will measure 43.92 mm in height and 17.15 mm in depth, have a flipper length of 200.92 mm and weight 4.2 kg. The overall dataset contains n=168 male and n=165 female from 3 main species (Adelie n=152, Gentoo n=124 and Chinstrap n=68). The data was collected between the years 2007-09.
+
+```{r}
+skimr::skim(penguins)
+```
+
+Alternatively, I could have used the `nrow`and `ncol` functions to return the number of rows and columns of the specified matrix ("penguins"), respectively.
+
+```{r}
+nrow(penguins)
+ncol(penguins)
+```
+
+
+#Graphic outputs
