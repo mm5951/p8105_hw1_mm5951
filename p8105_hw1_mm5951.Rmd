@@ -1,11 +1,10 @@
 ---
-title: "github_document"
+title: "Homework 1"
 author: "mm5951"
 date: "2022-09-18"
 output: github_document
 ---
-# Load library
-```{r, echo = FALSE}
+```{r, include = FALSE}
 library(tidyverse)
 ```
 
@@ -13,7 +12,7 @@ Welcome to mm5951 homework 1 solution!
 
 # Load dataset
 
-First, I'll load the provided dataset for this exercise.
+First, I'll **load the provided dataset** for this exercise.
 
 ```{r}
 data("penguins", package = "palmerpenguins")
@@ -21,7 +20,7 @@ data("penguins", package = "palmerpenguins")
 
 # Dataset description
 
-Next, I will briefly describe the key characteristics of the "penguins" dataset. I'll first use the `skmr::skim`command to print out a summary of the dataset. The "penguins" dataset contains 344 rows and 8 columns. That corresponds to the data of n=8 different variables (columns) from n=344 penguins (rows).
+Next, I will briefly describe the **key characteristics** of the **"penguins" dataset**. I'll first use the `skmr::skim`command to print out a summary of the dataset. The "penguins" dataset contains 344 rows and 8 columns. That corresponds to the data of n=8 different variables (columns) from n=344 penguins (rows).
 
 The "penguins" dataset contains:
 * 5 numerical variables ("bill_length_mm", "bill_depth_mm", "flipper_length_mm", "body_mass_g" and "year"), and 
@@ -42,13 +41,13 @@ ncol(penguins)
 
 # Graphic outputs
 
-Next, with the `ggplot`function, I will plot the variables flipper_length_mm (y) vs bill_length_mm (x), using different color points for each species. First I generate 
+Next, with the `ggplot`function, I will **produce a scatter plot** of the variables flipper_length_mm (y) vs bill_length_mm (x), using different color points for each species.  
 
 ```{r}
 ggplot(penguins, aes(x = bill_length_mm, y = flipper_length_mm, color = species)) + geom_point()
 ```
 
-Finally, using the `ggsave`function I will save the scatter plot in .png format into the project directory.
+Finally, using the `ggsave`function I will **save the scatter plot** in .png format into the project directory.
 
 ```{r}
 ggsave("scatterplot.png")
